@@ -3,11 +3,11 @@
 Course unit contents:
 
 1 General introduction to business, economic and financial data
---- Preliminary concepts and illustrative examples
+  - Preliminary concepts and illustrative examples
 
 2 Moving beyond the linear model
---- Linear regression model: main ideas and assumptions
---- Nonlinear regression models for new product growth
+  - Linear regression model: main ideas and assumptions
+  - Nonlinear regression models for new product growth
 
 3 Beyond linearity: regression splines, local regression, generalized additive models (GAM)
   
