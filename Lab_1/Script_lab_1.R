@@ -12,9 +12,28 @@ library(fpp2)
 plot(a10, ylab="million dollars", xlab="Year", main="Antidiabetic drugs")
 seasonplot(a10, ylab="million dollars", xlab="Year", main="Seasonal plot: Antidiabetic drugs", year.labels=T, year.labels.left=T, col=1:20, pch=19)
 
+log_y <- log(a10)
+plot(log_y, ylab="million dollars", xlab="Year", main="Antidiabetic drugs")
+
+lin <- tslm(log_y ~ trend)
+plot(log_y, ylab="million dollars", xlab="Year", main="Antidiabetic drugs")
+lines(fitted(lin), col=2)
+summary(lin)
+reslin <- residuals(lin)
+plot(reslin, xlab="Time", ylab="residuals" )
+Acf(reslin)
+
+lin_12 <- tslm(log_y ~ trend+season)
+plot(log_y, ylab="million dollars", xlab="Year", main="Antidiabetic drugs")
+lines(fitted(lin_12), col=2)
+summary(lin_12)
+reslin_12 <- residuals(lin_12)
+plot(reslin_12, xlab="Time", ylab="residuals" )
+Acf(reslin_12)
+
 ###########################################
 #### Linear regression for time series ####
-####           Facebook example        ####
+####         Facebook example          ####
 ###########################################
 
 ###read the data
@@ -34,7 +53,7 @@ plot(tt, fb, xlab="Time", ylab="Facebook users")
 acf(fb)
 
 ##fit a linear regression model 
-fit1 <- lm(fb~ tt)
+fit1 <- lm(fb ~ tt)
 summary(fit1)
 
 ##plot of the model
@@ -53,8 +72,9 @@ plot(resfit1,xlab="Time", ylab="residuals" )
 fb.ts <- ts(fb, frequency = 4)       # transform fb into a time series object
 ts.plot(fb.ts, type="o")             # ts.plot plot for time series
 
+
 ## we fit a linear model with the tslm function
-fitts<- tslm(fb.ts~trend)
+fitts <- tslm(fb.ts ~ trend)
 
 ###obviously it gives the same results of the first model
 summary(fitts)
@@ -73,10 +93,10 @@ imac <- apple$iMac
 plot(imac,type="l", xlab="quarter", ylab="iMac sales")
 
 #variable tt for a linear model 
-tt<- 1:NROW(apple)
+tt <- 1:NROW(apple)
 
 # linear model
-fit2 <- lm(imac~tt)
+fit2 <- lm(imac ~ tt)
 summary(fit2)
 
 plot(imac,type="l", xlab="quarter", ylab="iMac sales")
@@ -95,7 +115,7 @@ acf(res2)
 mac.ts<-ts(imac, frequency=4)
 
 #Model with trend and seasonality
-fit3 <- tslm(mac.ts~ trend+season)
+fit3 <- tslm(mac.ts ~ trend+season)
 summary(fit3)
 
 #check the residuals
@@ -113,7 +133,7 @@ lines(fitted(fit3), col=2)
 #### Data on quarterly percentage change in US consumption, income, production, savings, unemployment ####
 ##########################################################################################################
 
-uschange<- uschange
+uschange <- uschange
 str(uschange)
 plot(uschange)
 autoplot(uschange) 
@@ -214,7 +234,6 @@ axis(1, at=c(1,10,19,28,37), labels=music$year[c(1,10,19,28,37)])
 bm_cass<-BM(cassette,display = T)
 summary(bm_cass)
 
-# ascolta da minuto 1:10
 ###prediction (out-of-sample)
 pred_bmcas<- predict(bm_cass, newx=c(1:50))
 pred.instcas<- make.instantaneous(pred_bmcas)
@@ -350,3 +369,4 @@ plot(twitter$twitter, type= "b",xlab="Quarter", ylab="Quarterly revenues",  pch=
 axis(1, at=c(1,10,19,28,37,46), labels=twitter$quarter[c(1,10,19,28,37,46)])
 lines(fit_GGMtw_inst, lwd=1, lty=2)
 lines(pres2, lty=1,lwd=1)
+
